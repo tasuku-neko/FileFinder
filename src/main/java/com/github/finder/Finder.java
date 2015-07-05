@@ -24,15 +24,37 @@ public class Finder {
         if(args.getName() != null){
             flag &= checkTargetName(file, args.getName());
         }
-
-    if(args.getType() != null){
+        if(args.getType() != null){
             flag &= checkTargetType(file, args.getType());
         }
+        if(args.getSize() != null){
+            flag &= checkTargetSize(file, args.getSize());
+        }
+
+        return flag;
+        }
+
+     private boolean checkTargetSize(File file, String sizeString){
+        if(file.isFile()){
+            char sign = sizeString.charAt(0);
+            String string = sizeString.substring(1);
+            int size = Integer.parseInt(string);
+
+            switch(sign){
+            case '>':
+                return file.length() > size;
+            case '<':
+                return file.length() < size;
+            case '=':
+                return file.length() == size;
+            default:
+                // ignore
+            }
+        }
+        return false;
+        }
     
-  return flag;
-    }
-    
-    
+  
      private boolean checkTargetName(File file, String pattern){
             String name = file.getName();
         return name.indexOf(pattern) >= 0;
